@@ -1,0 +1,32 @@
+version: '3'
+services:
+  vetsystem:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - MONGODB_URL=mongodb://mongodb:27017
+      - MONGODB_DB=crud-init
+      - MONGODB_USER_DB_COLLECTION=users
+      - JWT_SECRET_KEY=123$567*901@34%67*90!23$09*76%4#
+    ports:
+      - "8080:8080"
+    depends_on:
+      - vetsystem-mongodb
+    networks:
+      - vetsystem_network
+
+  vetsystem-mongodb:
+    image: mongo:latest
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: root
+      MONGO_INITDB_ROOT_PASSWORD: root
+    ports:
+      - "27019:27017"
+    volumes:
+      - ./db:/data/db:rw
+    networks:
+      - vetsystem_network
+
+networks:
+  vetsystem_network:
