@@ -17,13 +17,13 @@ func ConvertDomainToResponse(hd holiday_domain.HolidayDomainInterface) holiday_r
 	}
 }
 
-func ConverterDomainToEntity(d holiday_domain.HolidayDomainInterface) (*entity.HolidayEntity, error) {
+func ConverterDomainToEntity(d holiday_domain.HolidayDomainInterface) (*entity.Holiday, error) {
 	dc, err := converter.ConvertStringDateToTimestamp(d.GetDate())
 	if err != nil {
 		return nil, err
 	}
 
-	return &entity.HolidayEntity{
+	return &entity.Holiday{
 		Date:        dc,
 		Type:        d.GetHolidayType(),
 		Description: d.GetDescription(),
@@ -31,7 +31,7 @@ func ConverterDomainToEntity(d holiday_domain.HolidayDomainInterface) (*entity.H
 	}, nil
 }
 
-func ConverterEntityToDomain(entity entity.HolidayEntity) holiday_domain.HolidayDomainInterface {
+func ConverterEntityToDomain(entity entity.Holiday) holiday_domain.HolidayDomainInterface {
 	domain := holiday_domain.NewHolidayDomain(
 		converter.ConvertDateTimestampToString(entity.Date),
 		entity.Type,

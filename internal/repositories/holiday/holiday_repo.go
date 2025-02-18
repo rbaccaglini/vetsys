@@ -34,7 +34,7 @@ func (r *holidayRepository) GetAll() ([]holiday_domain.HolidayDomainInterface, *
 
 	resp := []holiday_domain.HolidayDomainInterface{}
 	for cur.Next(context.Background()) {
-		userEntity := &entity.HolidayEntity{}
+		userEntity := &entity.Holiday{}
 		err := cur.Decode(userEntity)
 		if err != nil {
 			errMessage := "Error trying to get all holidays"
