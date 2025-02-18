@@ -1,13 +1,19 @@
 {
     "version": "0.2.0",
     "configurations": [
+
         {
             "name": "Launch",
             "type": "go",
             "request": "launch",
             "mode": "auto",
             "program": "${workspaceFolder}/cmd/vetsys",
-            "env": {},
+            "env": {
+                "MONGODB_URL": "mongodb://localhost:27017",
+                "MONGODB_DB": "vetsystem-db",
+                "MONGODB_HOLIDAY_COLLECTION": "holiday",
+                "JWT_SECRET_KEY": "123$567*901@34%67*90!23$09*76%4#",
+            },
             "args": []
         }
     ]

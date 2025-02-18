@@ -5,28 +5,31 @@ import (
 
 	"github.com/gin-gonic/gin"
 	holiday_response "github.com/rbaccaglini/vetsys/internal/models/response/holiday"
+	"github.com/rbaccaglini/vetsys/internal/util/converter"
 	"github.com/rbaccaglini/vetsys/pkg/utils/logger"
 	"go.uber.org/zap"
 )
 
-func FindAllHoliday(c *gin.Context) {
+func (h *holidayHandlerInterface) FindAllHoliday(c *gin.Context) {
 	journey := zap.String("journey", "FindAllHoliday")
 	logger.Info("Init Find All holidys", journey)
 
-	var holidays []holiday_response.HolidayResponse
-	var h holiday_response.HolidayResponse
-	h.ID = "1"
-	h.Date = "2021-01-01"
-	h.IsCyclical = true
-	h.Description = "test..."
-	h.Type = "NATIONAL"
+	list, err := h.service.FindAllHoliday()
+	if err != nil {
+		c.JSON(err.Code, err)
+		return
+	}
 
-	holidays = append(holidays, h)
+	listView := []holiday_response.HolidayResponse{}
+	for _, h := range list {
+		viewUser := converter.ConvertDomainToResponse(h)
+		listView = append(listView, viewUser)
+	}
 
-	c.JSON(http.StatusOK, holidays)
+	c.JSON(http.StatusOK, listView)
 }
 
-func FindHolidayByDate(c *gin.Context) {
+func (h *holidayHandlerInterface) FindHolidayByDate(c *gin.Context) {
 	journey := zap.String("journey", "FindHolidayByDate")
 	logger.Info("Init Find holidys by date", journey)
 

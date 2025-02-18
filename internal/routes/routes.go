@@ -5,13 +5,13 @@ import (
 	holiday_handler "github.com/rbaccaglini/vetsys/internal/handlers/holiday"
 )
 
-func InitRouter(r *gin.RouterGroup) {
+func InitRouter(r *gin.RouterGroup, handler holiday_handler.HolidayHandlerInterface) {
 
 	holidayRoutes := r.Group("/holiday")
 	{
-		holidayRoutes.GET("", holiday_handler.FindAllHoliday)
-		holidayRoutes.POST("")
-		holidayRoutes.PUT("")
+		holidayRoutes.GET("", handler.FindAllHoliday)
+		holidayRoutes.GET("/:date", handler.FindHolidayByDate)
+		holidayRoutes.POST("", handler.CreateHoliday)
 	}
 
 	speciesRoutes := r.Group("/species")
