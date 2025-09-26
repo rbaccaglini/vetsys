@@ -1,0 +1,51 @@
+# Arquivos de compilação binários
+# Binários de compilação (podem ser criados com 'go build' ou 'go install')
+*.exe
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+go.o
+
+# Diretórios de compilação
+# O diretório 'bin/' é frequentemente usado para armazenar binários de compilação
+bin/
+
+# Testes
+# Os diretórios de teste de cobertura de código
+test_coverage.txt
+*.cov
+
+# Dependências
+# O diretório 'vendor' é usado quando o vendoring de dependências está habilitado
+vendor/
+
+# Módulos Go (Go Modules)
+# Arquivos gerados pelo Go Modules
+# Este é opcional, pois 'go.sum' geralmente é comitado, mas 'go.mod' em projetos que não são a raiz pode ser ignorado.
+# Recomenda-se comitar go.mod e go.sum na raiz do projeto.
+# Se você está trabalhando em um projeto que importa seu módulo, você pode querer ignorar tudo, exceto go.mod e go.sum:
+# go.sum
+# go.mod
+
+# Arquivos de IDE e Editor
+
+# VS Code
+.vscode/
+
+# JetBrains IDEs (GoLand, IntelliJ, etc.)
+.idea/
+
+# Vim
+*.swp
+*.swo
+
+# Emacs
+*~
+\#*
+.\#*
+
+# Configurações de sistema operacional
+.DS_Store
+Thumbs.db
