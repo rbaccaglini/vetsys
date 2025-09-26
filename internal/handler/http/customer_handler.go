@@ -72,7 +72,7 @@ func (h *CustomerHandler) CreateCustomer(w http.ResponseWriter, r *http.Request)
 func (h *CustomerHandler) GetCustomerByID(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
 
-	// 1. Executa o Usecase
+	// 1. Run the Usecase
 	output, err := h.GetByIDUC.Execute(r.Context(), id)
 	if err != nil {
 		// Example: if it is a "not found" error (coming from Repository/Domain)
