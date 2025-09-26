@@ -4,18 +4,18 @@ import (
 	"vetsys/internal/domain/entity"
 )
 
-// CustomerRepository é a interface que define o contrato de persistência para a entidade Customer.
-// Esta interface é usada e conhecida SOMENTE pelos Usecases.
+// CustomerRepository is the interface that defines the persistence contract for the Customer entity.
+// This interface is used and known ONLY by Usecases.
 type CustomerRepository interface {
-	// Save persiste ou atualiza um novo Customer.
+	// Save persists or updates a new Customer.
 	Save(customer *entity.Customer) (*entity.Customer, error)
 
-	// FindByID busca um Customer pelo seu identificador único.
+	// FindByID searches for a Customer by its unique identifier.
 	FindByID(id string) (*entity.Customer, error)
 
-	// FindAll retorna uma lista de Customers.
+	// FindAll returns a list of Customers.
 	FindAll() ([]*entity.Customer, error)
 
-	// Delete remove um Customer pelo ID.
+	// Delete removes a Customer by ID.
 	Delete(id string) error
 }

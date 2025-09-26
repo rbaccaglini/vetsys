@@ -2,21 +2,23 @@ package http
 
 import (
 	"encoding/json"
+	"errors"
 	"net/http"
+	"vetsys/internal/domain"
 
 	"vetsys/internal/usecase/customer"
 
 	"github.com/go-chi/chi/v5"
 )
 
-// CustomerHandler é o adaptador HTTP.
-// Ele recebe o Usecase como dependência.
+// CustomerHandler is the HTTP adapter.
+// It receives the Usecase as a dependency.
 type CustomerHandler struct {
 	CreateUC  *customer.CreateCustomerUsecase
 	GetByIDUC *customer.GetCustomerByIDUsecase
 }
 
-// NewCustomerHandler é o construtor.
+// NewCustomerHandler is the constructor.
 func NewCustomerHandler(createUC *customer.CreateCustomerUsecase, getByIDUC *customer.GetCustomerByIDUsecase) *CustomerHandler {
 	return &CustomerHandler{
 		CreateUC:  createUC,
@@ -24,7 +26,7 @@ func NewCustomerHandler(createUC *customer.CreateCustomerUsecase, getByIDUC *cus
 	}
 }
 
-// RegisterRoutes configura as rotas para o Handler (exemplo com Chi).
+// RegisterRoutes configures the routes for the Handler (example with Chi).
 func (h *CustomerHandler) RegisterRoutes(r chi.Router) {
 	r.Post("/customers", h.CreateCustomer)
 	r.Get("/customers/{id}", h.GetCustomerByID)
@@ -41,7 +43,7 @@ func (h *CustomerHandler) CreateCustomer(w http.ResponseWriter, r *http.Request)
 		return
 	}
 
-	// 1. Traduz o DTO de Requisição (HTTP) para o DTO de Entrada do Usecase
+	// 1. Translate the Request DTO (HTTP) to the Usecase Input DTO
 	input := customer.CreateCustomerInput{
 		Name:    req.Name,
 		Email:   req.Email,
@@ -49,15 +51,15 @@ func (h *CustomerHandler) CreateCustomer(w http.ResponseWriter, r *http.Request)
 		Address: req.Address,
 	}
 
-	// 2. Executa o Usecase (Lógica de Negócio)
+	// 2. Execute the Usecase (Business Logic)
 	output, err := h.CreateUC.Execute(r.Context(), input)
 	if err != nil {
-		// Tratar erros específicos do domínio aqui, se necessário (ex: 409 Conflict)
+		// Handle domain-specific errors here if necessary (e.g. 409 Conflict)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// 3. Retorna a resposta (usando o DTO de Saída do Usecase)
+	// 3. Return the response (using the Usecase Output DTO)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusCreated) // 201 Created
 	json.NewEncoder(w).Encode(output)
@@ -73,16 +75,16 @@ func (h *CustomerHandler) GetCustomerByID(w http.ResponseWriter, r *http.Request
 	// 1. Executa o Usecase
 	output, err := h.GetByIDUC.Execute(r.Context(), id)
 	if err != nil {
-		// Exemplo: se for um erro de "não encontrado" (vindo do Repositório/Domínio)
-		// if errors.Is(err, domain.ErrCustomerNotFound) {
-		// 	http.Error(w, "Customer not found", http.StatusNotFound)
-		// 	return
-		// }
+		// Example: if it is a "not found" error (coming from Repository/Domain)
+		if errors.Is(err, domain.ErrCustomerNotFound) {
+			http.Error(w, "Customer not found", http.StatusNotFound)
+			return
+		}
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// 2. Retorna a resposta
+	// 2. Return the response
 	w.Header().Set("Content-Type", "application/json")
 	json.NewEncoder(w).Encode(output)
 }

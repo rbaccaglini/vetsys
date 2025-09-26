@@ -8,7 +8,7 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
-// CustomerDAO (Data Access Object) representa a estrutura do documento conforme ele é armazenado no MongoDB.
+// CustomerDAO (Data Access Object) represents the structure of the document as it is stored in MongoDB.
 type CustomerDAO struct {
 	ID primitive.ObjectID `bson:"_id,omitempty"`
 
@@ -21,10 +21,9 @@ type CustomerDAO struct {
 	UpdatedAt time.Time `bson:"updated_at"`
 }
 
-// ToDomainEntity converte o DAO de Persistência em uma Entidade de Domínio.
+// ToDomainEntity converts the Persistence DAO into a Domain Entity.
 func (dao *CustomerDAO) ToDomainEntity() *entity.Customer {
 	return &entity.Customer{
-		// O ID BSON precisa ser convertido para string para a Entidade de Domínio
 		ID:        dao.ID.Hex(),
 		Name:      dao.Name,
 		Email:     dao.Email,
@@ -34,8 +33,8 @@ func (dao *CustomerDAO) ToDomainEntity() *entity.Customer {
 	}
 }
 
-// FromDomainEntity converte uma Entidade de Domínio em um DAO de Persistência.
-// É usado quando vamos salvar ou atualizar no MongoDB.
+// FromDomainEntity converts a Domain Entity into a Persistence DAO.
+// It is used when saving or updating in MongoDB.
 func FromDomainEntity(e *entity.Customer) *CustomerDAO {
 	objID, _ := primitive.ObjectIDFromHex(e.ID)
 

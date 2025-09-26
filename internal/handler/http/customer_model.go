@@ -2,7 +2,7 @@ package http
 
 import "vetsys/internal/domain/entity"
 
-// CreateCustomerRequest representa o DTO de entrada (HTTP Body) para a criação de um novo cliente.
+// CreateCustomerRequest represents the input DTO (HTTP Body) for creating a new customer.
 type CreateCustomerRequest struct {
 	Name    string `json:"name" validate:"required"`
 	Email   string `json:"email" validate:"required,email"`
@@ -10,7 +10,7 @@ type CreateCustomerRequest struct {
 	Address string `json:"address"`
 }
 
-// ToDomainEntity converter o DTO em uma entidade de domínio
+// ToDomainEntity convert the DTO to a domain entity
 func (r *CreateCustomerRequest) ToDomainEntity() *entity.Customer {
 	return &entity.Customer{
 		Name:    r.Name,

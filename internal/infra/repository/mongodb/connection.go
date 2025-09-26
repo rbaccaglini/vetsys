@@ -9,8 +9,8 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-// ConnectToMongoDB inicializa a conexão com o cliente MongoDB.
-// Se a conexão falhar, ela deve parar a aplicação ou retornar um erro.
+// ConnectToMongoDB initializes the connection to the MongoDB client.
+// If the connection fails, it should stop the application or return an error.
 func ConnectToMongoDB(uri string, dbName string) (*mongo.Client, string) {
 	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
 	defer cancel()
@@ -20,7 +20,7 @@ func ConnectToMongoDB(uri string, dbName string) (*mongo.Client, string) {
 		log.Fatalf("Falha ao conectar ao MongoDB: %v", err)
 	}
 
-	// Opcional: Verifica se a conexão foi estabelecida
+	// Optional: Checks if the connection was established
 	err = client.Ping(ctx, nil)
 	if err != nil {
 		log.Fatalf("Falha no Ping ao MongoDB: %v", err)
@@ -28,6 +28,6 @@ func ConnectToMongoDB(uri string, dbName string) (*mongo.Client, string) {
 
 	log.Println("Conexão com MongoDB estabelecida com sucesso.")
 
-	// Retornamos o cliente e o nome do banco de dados (que é uma informação da infra)
+	// We return the client and the database name (which is information from the infrastructure)
 	return client, dbName
 }

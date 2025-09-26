@@ -4,7 +4,7 @@ import (
 	"time"
 )
 
-// Customer representa a entidade de negócio principal.
+// Customer represents the main business entity.
 type Customer struct {
 	ID        string    `json:"id"`
 	Name      string    `json:"name"`
